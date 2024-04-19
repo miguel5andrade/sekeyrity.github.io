@@ -37,7 +37,7 @@ window.code_submited = function() {
 
     const default_user = child(ref_root, 'users/default');
 
-// get the default user
+// get the default users
 get(default_user).then((snapshot) => {
   if (snapshot.exists()) {
     const found_user = snapshot.val();
