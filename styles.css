@@ -1,3 +1,4 @@
+
 h1 {
   font-size: 36px;
   color: #ffffff;
@@ -114,6 +115,8 @@ body {
 
 .insert_user_info {
   text-align: center;
+  display: flex;
+  align-items: center; 
 }
 .insert_user_info p {
   color: #fff;
@@ -121,6 +124,7 @@ body {
 
 .left-div,
 .right-div {
+  flex: 1; 
   display: inline-block;
   width: 45%; /* Adjust the width as needed */
   vertical-align: top; /* Aligns content at the top */
@@ -131,4 +135,30 @@ body {
   width: 32rem; /* Adjust the width as needed */
   height: auto; /* Maintain aspect ratio */
   align-self: flex-end; /* Align the image to the end of the flex container */
+}
+.right-div img {
+  max-width: 100%; /* Ensure image doesn't exceed container width */
+  height: auto;
+}
+.left-div {
+  margin-right: 9px; /* Adjust the margin as needed */
+}
+.right-div {
+  margin-left: 9px; /* Adjust the margin as needed */
+}
+.left-div a {
+  margin-right: 12px; /* Adjust the margin as needed */
+}
+.left-div input[type="text"],
+.right-div input[type="text"] {
+  width: 50%; /* Adjust the width as needed */
+  padding: 10px; /* Adjust padding as needed */
+  margin-bottom: 10px; /* Add margin between input elements */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 5px; /* Add border radius */
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+/* Additional CSS to change font */
+.left-div p {
+  font-family: 'Manjari', sans-serif; /* Use Manjari font with fallback to sans-serif */
 }
