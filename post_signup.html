@@ -23,19 +23,28 @@
     <div class="insert_user_info">
       <div class="left-div">
         <p>New user detected.</p>
-        <p>Please insert your information.</p>
+        <p id="insert_info_message">Please insert your information.</p>
         <div>
           <input type="text" id="emailInput" placeholder="E-mail" />
         </div>
         <div>
-          <input type="text" id="passwordInput" placeholder="Password" />
+          <input type="password" id="passwordInput" placeholder="Password" />
         </div>
         <div>
           <input
-            type="text"
+            type="password"
             id="cpasswordInput"
             placeholder="Confirm Password"
           />
+        </div>
+        <div>
+          <button
+            type="submit"
+            id="submit-signupinfo"
+            onclick="get_signup_info()"
+          >
+            Submit
+          </button>
         </div>
       </div>
       <div class="right-div">
@@ -46,5 +55,6 @@
         />
       </div>
     </div>
+    <script src="index.js" type="module"></script>
   </body>
 </html>

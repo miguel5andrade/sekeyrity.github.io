@@ -1,4 +1,3 @@
-
 h1 {
   font-size: 36px;
   color: #ffffff;
@@ -116,7 +115,7 @@ body {
 .insert_user_info {
   text-align: center;
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 .insert_user_info p {
   color: #fff;
@@ -124,7 +123,7 @@ body {
 
 .left-div,
 .right-div {
-  flex: 1; 
+  flex: 1;
   display: inline-block;
   width: 45%; /* Adjust the width as needed */
   vertical-align: top; /* Aligns content at the top */
@@ -150,7 +149,8 @@ body {
   margin-right: 12px; /* Adjust the margin as needed */
 }
 .left-div input[type="text"],
-.right-div input[type="text"] {
+.right-div input[type="text"],
+.left-div input[type="password"] {
   width: 50%; /* Adjust the width as needed */
   padding: 10px; /* Adjust padding as needed */
   margin-bottom: 10px; /* Add margin between input elements */
@@ -160,5 +160,5 @@ body {
 }
 /* Additional CSS to change font */
 .left-div p {
-  font-family: 'Manjari', sans-serif; /* Use Manjari font with fallback to sans-serif */
+  font-family: "Manjari", sans-serif; /* Use Manjari font with fallback to sans-serif */
 }

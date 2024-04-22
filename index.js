@@ -66,3 +66,20 @@ get(default_user).then((snapshot) => {
   console.error("Error reading default user:", error);
 });
 }
+
+window.get_signup_info = function(){
+  let user_email = document.getElementById('emailInput').value;
+  let password = document.getElementById('passwordInput').value;
+  let cpassword = document.getElementById('cpasswordInput').value;
+
+  //verificar se todos os campos têm valores
+  if(user_email === "" || password === "" || cpassword === ""){
+    let messageElement = document.getElementById('insert_info_message');
+    messageElement.textContent = "Please fill in all fields."; // Set the message conten
+  }
+
+
+  //verificar se o email é válido
+
+  //verificar se as passwords sao iguais 
+} 
