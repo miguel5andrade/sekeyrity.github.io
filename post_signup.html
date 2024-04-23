@@ -25,6 +25,9 @@
         <p>New user detected.</p>
         <p id="insert_info_message">Please insert your information.</p>
         <div>
+          <input type="text" id="nickname" placeholder="Username" />
+        </div>
+        <div>
           <input type="text" id="emailInput" placeholder="E-mail" />
         </div>
         <div>
@@ -55,6 +58,9 @@
         />
       </div>
     </div>
+
+    <!-- script de hashing SHA-256 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="index.js" type="module"></script>
   </body>
 </html>

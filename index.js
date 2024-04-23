@@ -27,15 +27,13 @@
 const db = getDatabase();
 // Create a reference to the root of the database
 const ref_root = ref(db, "/");
-const ref_user = ref(db,'users')
-
 
 //Houve a submissao de um codigo no site temos de verificar na base de dados
 window.code_submited = function() {
-    let codeInput = document.getElementById('codeInput');
-    let codeString = codeInput.value;   //codigo inserido
+  let codeInput = document.getElementById('codeInput');
+  let codeString = codeInput.value;   //codigo inserido
 
-    const default_user = child(ref_root, 'users/default');
+  const default_user = child(ref_root, 'users/default');
 
 // get the default users
 get(default_user).then((snapshot) => {
@@ -54,7 +52,7 @@ get(default_user).then((snapshot) => {
       console.log("Password is incorrect!");
       //fazer aparecer no ecra que o código está errado
 
-       var messageElement = document.getElementById('insert_message');
+      var messageElement = document.getElementById('insert_message');
       messageElement.textContent = "Incorrect code. Please try again."; // Set the message content
 
     }
@@ -67,19 +65,70 @@ get(default_user).then((snapshot) => {
 });
 }
 
+
+function hashPassword(password) {
+    return CryptoJS.SHA256(password).toString();
+}
+
 window.get_signup_info = function(){
+  let nickname = document.getElementById('nickname').value;
   let user_email = document.getElementById('emailInput').value;
   let password = document.getElementById('passwordInput').value;
   let cpassword = document.getElementById('cpasswordInput').value;
 
+  let messageElement = document.getElementById('insert_info_message'); //placeholder da mensagem por cima dos campos de inserção
   //verificar se todos os campos têm valores
   if(user_email === "" || password === "" || cpassword === ""){
-    let messageElement = document.getElementById('insert_info_message');
-    messageElement.textContent = "Please fill in all fields."; // Set the message conten
+    messageElement.textContent = "Please fill in all fields."; // Set the message content
+    return;
   }
 
-
+  
   //verificar se o email é válido
+  var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  //verificar se as passwords sao iguais 
+  // Check if the email matches the pattern, if not it returns false
+  if (emailPattern.test(user_email) == false) {
+    messageElement.textContent = "Invalid e-mail."; 
+    return;
+  }          
+
+  
+  //dar hash às passwords, mesmo assim nao está totalmente seguro!! este código corre no browser do cliente, devia correr no lado do servidor (adicionava mais complexidade)  
+  const hashedPassword = hashPassword(password);
+  const hashedcPassword = hashPassword(cpassword);
+  
+  //verificar se são iguais
+  if(hashedPassword != hashedcPassword){
+      messageElement.textContent = "The passwords have to match."; 
+      return;
+  }
+   
+  //se passarmos todos estas verificações já podemos alterar as informações na base de dados
+
+  // Update the default user's password, email, and node name, para fazer isto vamos copiar o conteudo de default para outro no e apagar o default
+  get(child(ref_root, 'users/default')).then((snapshot) => {
+  if (snapshot.exists()) {
+    const userData = snapshot.val();
+
+    // Set the data under the new nickname
+    set(child(ref_root, 'users/' + nickname), userData).then(() => {
+      // New nickname node created successfully, now remove the old 'default' node
+      remove(child(ref_root, 'users/default')).then(() => {
+        // Default user node removed successfully
+      });
+    });
+
+    // Update the email and password under the new nickname
+    update(ref_root, {
+      ['users/' + nickname + '/e-mail']: user_email,
+      ['users/' + nickname + '/password']: hashedPassword
+    }).then(() => {
+      // Email and password updated successfully under the new nickname
+    });
+  }
+});
+
+
+  //passar para a janela onde se pedem as permissões
 } 

@@ -39,10 +39,15 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-image: url("assets/background.jpeg"); /* Replace 'your-image-path.jpg' with the path to your image */
-  background-size: cover; /* Cover the entire background */
-  background-position: center; /* Center the background image */
-  background-repeat: no-repeat; /* Do not repeat the background image */
+  background-color: #040a3b;
+  opacity: 1;
+  background-image: radial-gradient(
+      #ac5c00 1.4000000000000001px,
+      transparent 1.4000000000000001px
+    ),
+    radial-gradient(#ac5c00 1.4000000000000001px, #040a3b 1.4000000000000001px);
+  background-size: 56px 56px;
+  background-position: 0 0, 28px 28px;
 }
 
 .btn {
