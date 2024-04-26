@@ -132,3 +132,53 @@ window.get_signup_info = function(){
 
   //passar para a janela onde se pedem as permissões
 } 
+
+
+
+//Enviar email
+
+      /*
+      const express = require('express');
+      const nodemailer = require('nodemailer');
+      const bodyParser = require('body-parser');
+
+      const PORT = process.env.PORT || 3000;
+
+      // Configurar o nodemailer
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'sekeyrity@gmail.com',
+          pass: 'eletrocap2324pic1'
+        }
+      });
+
+      // Configurar o body-parser
+      app.use(bodyParser.urlencoded({ extended: false }));
+      app.use(bodyParser.json());
+
+      // Rota para lidar com o envio de e-mails
+      app.post('/send-email', (req, res) => {
+        const { name, email, subject, message } = req.body;
+
+        const mailOptions = {
+          from: email, // Usar o endereço de e-mail fornecido pelo usuário como remetente
+          to: 'sekeyrity@gmail.com', // Endereço de e-mail para onde os e-mails serão enviados
+          subject: subject,
+          text: `Nome: ${name}\nE-mail: ${email}\nMensagem: ${message}`
+        };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log(error);
+            res.status(500).send('Ocorreu um erro ao enviar o e-mail.');
+          } else {
+            console.log('E-mail enviado: ' + info.response);
+            res.send('Obrigado por entrar em contato! Seu e-mail foi enviado com sucesso.');
+          }
+        });
+      });
+
+      app.listen(PORT, () => {
+        console.log(`Servidor rodando na porta ${PORT}`);
+      });*/

@@ -264,14 +264,13 @@ textarea:focus,input[type="text"]:focus, input[type = "email"]:focus{
 .team-photos img {
   width: 100%;
   height: auto;
-border-radius: 24px;
+  border-radius: 24px;
 }
 
 .team_photo { 
-  flex:1;
-  height: auto;
-  width: 16%;
-
+  flex: 1;
+  margin: 0; /* Reset any default margin */
+  padding: 0; /* Reset any default padding */
 }
 
 .caption {
