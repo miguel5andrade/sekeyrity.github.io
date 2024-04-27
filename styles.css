@@ -44,7 +44,7 @@ header {
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Quicksand', sans-serif; /* Apply the rounded font globally */
   margin: 0;
   padding: 0;
   background-color: #040a3b;
@@ -185,12 +185,171 @@ body {
 }
 /* Additional CSS to change font */
 .left-div p {
-  font-family: "Manjari", sans-serif; /* Use Manjari font with fallback to sans-serif */
+  font-family: 'Quicksand', sans-serif; /* Set the font family */}
+
+/* USER_KEY.HTML */
+.checklist-container {
+  display: flex;
+  justify-content: flex-start; /* Start with flex-start, allowing manual adjustment */
+  align-items: flex-start;
+  padding: 20px;
+  margin-left: 200px; /* Add a left margin to push the container to the right */
+  margin-top: 50px; 
 }
 
+.checklist {
+  flex: 1;
+  padding: 20px;
+  color: white;
+  font-size: 20px; /* Larger font size for visibility */
+  border-radius: 10px;
+  margin-right: 20px;
+}
 
+.checklist h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
+.checklist div {
+  margin-bottom: 30px; /* Increase the space between each checklist item */
+}
 
+input[type="checkbox"] {
+  width: 40px;  /* Custom width */
+  height: 40px; /* Custom height */
+  background-color: white;
+  border: 2px solid #000; /* Border for visibility */
+  appearance: none; /* Removes default checkbox appearance */
+  cursor: pointer;
+  vertical-align: middle; /* Align checkbox with text */
+}
+
+input[type="checkbox"]:checked {
+  background-color: #e76e28; /* Color when checked */
+}
+
+.checklist label {
+  padding-left: 100px; /* Space between checkbox and text */
+  vertical-align: middle; /* Ensure text aligns with checkbox */
+}
+.right-div_text {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* Align items in a column */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  min-height: 250px; /* Minimum height to ensure content can be centered */
+}
+
+/* Hide the default checkbox */
+input[type="checkbox"] {
+  display: none; /* Hide the checkbox */
+}
+
+/* Custom style for the checkbox's label */
+label {
+  display: inline-block;
+  position: relative; /* Allows use of pseudo-elements */
+  padding-left: 30px; /* Space for the custom checkbox */
+  cursor: pointer;
+}
+
+/* Create a custom checkbox with a pseudo-element */
+label::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e76e28; /* Orange border for unchecked state */
+  position: absolute;
+  left: 0; /* Position it before the label text */
+  top: 50%; /* Center it vertically */
+  transform: translateY(-50%); /* Adjust vertical alignment */
+  border-radius: 6px; /* Optional, for slightly rounded corners */
+}
+
+/* Add an orange check mark when the checkbox is checked */
+input[type="checkbox"]:checked + label::before {
+  content: 'âœ”'; /* Check mark symbol */
+  color: #e76e28; /* Orange color for the check mark */
+  text-align: center; /* Center the check mark */
+  font-size: 16px; /* Adjust check mark size */
+}
+.request-text {
+  color: white;
+  font-size: 22px;
+  margin-bottom: 50px; /* Space between text and button */
+}
+
+.big-orange-button {
+  padding: 15px 30px; /* Larger padding for a bigger button */
+  background-color: #ec7602; /* Bright orange color */
+  color: white;
+  font-family: 'Quicksand', sans-serif; /* Set the font family */
+  font-size: 20px; /* Larger font size for visibility */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer; /* Indicate it's clickable */
+  transition: background-color 0.3s;
+}
+
+.big-orange-button:hover {
+  background-color: #ac5c00; /* Darker orange on hover */
+}
+
+/* ADMIN_GIVE_ACCESS.HTML */
+.top-left-text {
+  font-weight: bold; /* Make the text bold */
+  font-size: 28px; /* Set a reasonable font size */
+  color: #ffffff; /* Ensure the text is white */
+  text-align: left; /* Align the text to the left */
+  margin-left: 80px; /* Add some space on the left side */
+  margin-top: 60px; /* Add some space on the left side */
+  letter-spacing: 10px; /* Add space between letters */
+}
+.vertical-section {
+  display: flex; /* Use Flexbox to stack boxes vertically */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center items horizontally */
+  height: 60vh; /* Occupy most of the viewport's height */
+}
+
+.white-box {
+  background-color: white; /* White background for the box */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Add internal padding */
+  text-align: center; /* Center the content within the box */
+  width: 80%; /* Define the width of the box */
+  margin-bottom: 30px; /* Space between the boxes */
+}
+
+.box-content {
+  display: flex; /* Flexbox for even spacing */
+  justify-content: space-between; /* Space between sections */
+  align-items: center; /* Align items vertically */
+}
+
+.buttons {
+  display: flex; /* Flexbox to align buttons */
+  justify-content: space-between; /* Even space between buttons */
+}
+
+.buttons button {
+  padding: 10px; /* Add padding to the buttons */
+  background-color: #ec7602; /* Orange background */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  color: white; /* White text */
+  font-family: 'Quicksand', sans-serif; /* Set the font family */
+  font-size: 11px; /* Larger font size for visibility */
+  cursor: pointer; /* Indicate it's clickable */
+}
+
+.buttons button:hover {
+  background-color: #ac5c00; /* Darker orange on hover */
+}
 /* About Us Section */
 .container-about-contact {
   display: flex;
@@ -205,7 +364,7 @@ body {
   flex-direction: column;
   background-color: #172060;
   color: #fff;
-  text-align: justify; /* Alinhar o texto à esquerda */
+  text-align: justify; /* Alinhar o texto Ã  esquerda */
   border-radius: 24px;
   margin-top: 1%;
   margin-bottom: 5%;
@@ -253,7 +412,7 @@ textarea {
   resize: vertical;
 }
 
-/* Estilo para a textarea quando está focada */
+/* Estilo para a textarea quando estÃ¡ focada */
 textarea:focus,input[type="text"]:focus, input[type = "email"]:focus{
   border-color: #ff9900; /* Cor da borda alterada */
 }
