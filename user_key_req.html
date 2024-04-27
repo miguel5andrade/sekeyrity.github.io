@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing Page</title>
+    <!-- Import Quicksand from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="index.html">
+          <img src="/assets/titulo_3x.png" alt="Logo" class="logo" />
+        </a>
+        <nav class="top-nav">
+          <a href="user_key_req.html" class="top-nav-btn">Request Access</a>
+          <a href="#" class="top-nav-btn">Services</a>
+          <a href="#" class="top-nav-btn">Contact</a>
+        </nav>
+      </header>
+    </div>
+
+
+
+    <div class="checklist-container">
+     <div class="checklist">
+      <div class="left-div">
+        <h2></h2>
+            <div>
+                <input type="checkbox" id="task1">
+                <label for="task1">Key Number 1</label>
+            </div>
+            <div>
+                <input type="checkbox" id="task2">
+                <label for="task2">Key Number  2</label>
+            </div>
+            <div>
+                <input type="checkbox" id="task3">
+                <label for="task3">Key Number 3</label>
+            </div>
+            <div>
+                <input type="checkbox" id="task4">
+                <label for="task4">Key Number  4</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-div_text">
+        <p class="request-text">Please Select the Keys </p>
+        <button class="big-orange-button">SUBMIT REQUEST</button>
+    </div>
+</div>
+
+    
+    <!-- script de hashing SHA-256 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="index.js" type="module"></script>
+  </body>
+</html>
