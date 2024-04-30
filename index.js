@@ -6,18 +6,17 @@
 
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyAcsgIAPrhau7rYBooLPtM_APbeT0WckIs",
-      authDomain: "sekeyrity-c3b78.firebaseapp.com",
-      databaseURL:
-        "https://sekeyrity-c3b78-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "sekeyrity-c3b78",
-      storageBucket: "sekeyrity-c3b78.appspot.com",
-      messagingSenderId: "874280357227",
-      appId: "1:874280357227:web:923dea5aa88fc115f0102e",
-      measurementId: "G-8PE4BP9MPG",
-    };
-
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAcsgIAPrhau7rYBooLPtM_APbeT0WckIs",
+    authDomain: "sekeyrity-c3b78.firebaseapp.com",
+    databaseURL: "https://sekeyrity-c3b78-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "sekeyrity-c3b78",
+    storageBucket: "sekeyrity-c3b78.appspot.com",
+    messagingSenderId: "874280357227",
+    appId: "1:874280357227:web:923dea5aa88fc115f0102e",
+    measurementId: "G-8PE4BP9MPG"
+  };
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
@@ -129,8 +128,12 @@ window.get_signup_info = function(){
   }
 });
 
+  /****************
+   * FALTA ISTO, COMO GUARDAR NA BASE DE DADOS OS PEDIDOS?
+   * 
+   */
 
-  //passar para a janela onde se pedem as permissões
+  //passar para a janela onde se pedem as permissões 
 } 
 
 
@@ -182,3 +185,58 @@ window.get_signup_info = function(){
       app.listen(PORT, () => {
         console.log(`Servidor rodando na porta ${PORT}`);
       });*/
+
+
+
+//funcao que processa dados do login
+window.process_login = function(){
+  console.log("entrei");
+  let email = document.getElementById("login_email").value;
+  let plainPassword = document.getElementById("login_password").value;
+  let messageElement = document.getElementById('login_message');
+
+  //temos de dar hash à password para ser possivel comparar com as da base de dados
+  const hashedPassword = hashPassword(plainPassword);
+
+  //varrer a base de dados à procura do email e comparar a pass.
+  
+  // Reference to the 'users' node in the database
+  const usersRef = ref(db, '/users');
+
+  // Retrieve the data under 'users'
+  get(usersRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      //loop por todos os users
+      snapshot.forEach((childSnapshot) => {
+        let userData = childSnapshot.val();
+        let storedEmail = userData['e-mail'];
+        let storedPassword = userData.password; 
+        // Compare the stored email with the provided email
+        if (email === storedEmail) {
+          // Email match, now compare the password
+          if (hashedPassword === storedPassword) {
+            // User autenticado, passar para a próxima página, guardar o user que foi autenticado
+            let isAdmin = userData.admin; //verificar se é admin
+            if(isAdmin === 1){
+              // redirecionar para a página dos admins
+              window.location.href = "admin_give_acess.html"; 
+            }else{
+              //redirecionar para a página dos users normais
+              window.location.href = "user_key_req.html"; 
+
+            }
+            
+          }
+        }
+      });
+      // No matching email found
+      messageElement.textContent = "E-mail or password wrong.";
+    } else {
+      // No users found in the database
+      messageElement.textContent = "E-mail or password wrong.";
+    }
+
+
+  });
+
+}

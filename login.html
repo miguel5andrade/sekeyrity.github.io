@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Landing Page</title>
     <!-- Import Quicksand from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -24,18 +27,18 @@
 
     <div class="insert_user_info">
       <div class="left-div">
-        <p>Please insert your information.</p>
+        <p id="login_message">Please insert your information.</p>
         <div>
-          <input type="text" id="emailInput" placeholder="E-mail" />
+          <input type="text" id="login_email" placeholder="E-mail" />
         </div>
         <div>
-          <input type="password" id="passwordInput" placeholder="Password" />
+          <input type="password" id="login_password" placeholder="Password" />
         </div>
-        <div class = btn>
-          <button type="submit" onclick="">Submit</button>
+        <div class="btn">
+          <button type="submit" onclick="process_login()">Submit</button>
         </div>
       </div>
-      
+
       <div class="right-div">
         <img
           src="/assets/right_image.webp"
@@ -44,5 +47,8 @@
         />
       </div>
     </div>
+    <!-- script de hashing SHA-256 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="index.js" type="module"></script>
   </body>
 </html>
