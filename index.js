@@ -39,7 +39,7 @@ get(default_user).then((snapshot) => {
   if (snapshot.exists()) {
     const found_user = snapshot.val();
     let password = found_user.password.toString(); // Accessing the password attribute
-    console.log(password);
+    
     if (password === codeString.toString()) {
       console.log("Password is correct!");
       //fazer aparecer no ecrã campos para meter a nova password e email
@@ -70,7 +70,7 @@ function hashPassword(password) {
 }
 
 window.get_signup_info = function(){
-  let nickname = document.getElementById('nickname').value;
+ let nickname = document.getElementById('nickname').value;
   let user_email = document.getElementById('emailInput').value;
   let password = document.getElementById('passwordInput').value;
   let cpassword = document.getElementById('cpasswordInput').value;
@@ -107,38 +107,48 @@ window.get_signup_info = function(){
 
   // Update the default user's password, email, and node name, para fazer isto vamos copiar o conteudo de default para outro no e apagar o default
   get(child(ref_root, 'users/default')).then((snapshot) => {
-  if (snapshot.exists()) {
-    const userData = snapshot.val();
+    if (snapshot.exists()) {
+        const userData = snapshot.val();
+        
+        // Set the data under the new nickname
+        set(child(ref_root, 'users/' + nickname), userData).then(() => {
+            // New nickname node created successfully, now remove the old 'default' node
+            remove(child(ref_root, 'users/default')).then(() => {
+                // Default user node removed successfully
+                // Update the email and password under the new nickname
+                update(ref_root, {
+                    ['users/' + nickname + '/e-mail']: user_email,
+                    ['users/' + nickname + '/password']: hashedPassword
+                }).then(() => {
+                    // Email and password updated successfully under the new nickname
+                    // After all operations complete successfully, redirect the user
+                    //passar para a janela onde se pedem as permissões 
+                    const user = {
+                      email: user_email,
+                      isAdmin: 0,
+                      username: nickname
+                    };
+                    sessionStorage.setItem('currentUser', JSON.stringify(user)) ;
 
-    // Set the data under the new nickname
-    set(child(ref_root, 'users/' + nickname), userData).then(() => {
-      // New nickname node created successfully, now remove the old 'default' node
-      remove(child(ref_root, 'users/default')).then(() => {
-        // Default user node removed successfully
-      });
-    });
 
-    // Update the email and password under the new nickname
-    update(ref_root, {
-      ['users/' + nickname + '/e-mail']: user_email,
-      ['users/' + nickname + '/password']: hashedPassword
-    }).then(() => {
-      // Email and password updated successfully under the new nickname
-    });
-  }
+                    window.location.href = "user_key_req.html";
+                }).catch((error) => {
+                    console.error("Error updating email and password:", error);
+                });
+            }).catch((error) => {
+                console.error("Error removing default user node:", error);
+            });
+        }).catch((error) => {
+            console.error("Error setting data under new nickname:", error);
+        });
+    } else {
+        console.error("User data for 'default' node does not exist.");
+    }
+}).catch((error) => {
+    console.error("Error getting user data:", error);
 });
 
-
-  //passar para a janela onde se pedem as permissões 
-  const user = {
-    email: user_email,
-    isAdmin: 0,
-    username: nickname
-  };
-  sessionStorage.setItem('currentUser', JSON.stringify(user)) ;
-
-  window.location.href = "user_key_req.html";
-
+ 
 } 
 
 
