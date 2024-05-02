@@ -303,12 +303,18 @@ const ref_root = ref(db, "/");
 
 
 
-  // Perform the update
-  update(ref_root, updates)
-      .then(() => {
-        messageholder.textContent = "Request successfull";
-      })
-      .catch((error) => {
-          console.error("Error registering topic:", error);
-      });
+    // Perform the update
+    update(ref_root, updates)
+        .then(() => {
+            console.log("Topic registered successfully.");
+            // Redirect or perform other actions as needed
+        })
+        .catch((error) => {
+            console.error("Error registering topic:", error);
+        });
+}
+window.userlogged = function(){
+  let messageElement = document.getElementById('logged');
+  const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+  messageElement.textContent =currentUser.username;
 }
