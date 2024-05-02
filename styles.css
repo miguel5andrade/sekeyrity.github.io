@@ -304,8 +304,7 @@ input[type="checkbox"]:checked + label::before {
   font-size: 28px; /* Set a reasonable font size */
   color: #ffffff; /* Ensure the text is white */
   text-align: left; /* Align the text to the left */
-  margin-left: 80px; /* Add some space on the left side */
-  margin-top: 60px; /* Add some space on the left side */
+  margin: 3%;
   letter-spacing: 10px; /* Add space between letters */
 }
 .vertical-section {
@@ -313,7 +312,8 @@ input[type="checkbox"]:checked + label::before {
   flex-direction: column; /* Stack items vertically */
   justify-content: center; /* Center content vertically */
   align-items: center; /* Center items horizontally */
-  height: 60vh; /* Occupy most of the viewport's height */
+
+
 }
 
 .white-box {
