@@ -35,11 +35,9 @@ header {
 
 .top-nav-btn:hover {
   text-decoration: underline;
-  transform: scale(1.1); 
+  transform: scale(1.1);
   transition: transform 0.3s;
 }
-
-
 
 .logo {
   max-width: 13rem;
@@ -47,7 +45,7 @@ header {
 }
 
 body {
-  font-family: 'Quicksand', sans-serif; /* Apply the rounded font globally */
+  font-family: "Quicksand", sans-serif; /* Apply the rounded font globally */
   margin: 0;
   padding: 0;
   background-color: #040a3b;
@@ -69,16 +67,14 @@ body {
   text-decoration: none;
   font-size: 18px;
   border-radius: 5px;
-  transition: background-color 0.3s; 
-  
+  transition: background-color 0.3s;
 }
 
 .btn:hover {
   background-color: #ac5c00;
-  transform: scale(1.1); 
-  transition: transform 0.3s; 
+  transform: scale(1.1);
+  transition: transform 0.3s;
 }
-
 
 .login-buttons {
   display: flex;
@@ -92,8 +88,6 @@ body {
 .login-buttons a {
   margin-right: 4rem; /* Adjust the spacing between the buttons */
 }
-
-
 
 .right-image {
   margin-bottom: 05rem;
@@ -145,9 +139,9 @@ body {
 
 .btn button[type="submit"] {
   background-color: transparent;
-  border: none; 
+  border: none;
   color: #fff;
-} 
+}
 
 .left-div,
 .right-div {
@@ -188,7 +182,8 @@ body {
 }
 /* Additional CSS to change font */
 .left-div p {
-  font-family: 'Quicksand', sans-serif; /* Set the font family */}
+  font-family: "Quicksand", sans-serif; /* Set the font family */
+}
 
 /* USER_KEY.HTML */
 .checklist-container {
@@ -197,7 +192,7 @@ body {
   align-items: flex-start;
   padding: 20px;
   margin-left: 200px; /* Add a left margin to push the container to the right */
-  margin-top: 50px; 
+  margin-top: 50px;
 }
 
 .checklist {
@@ -219,7 +214,7 @@ body {
 }
 
 input[type="checkbox"] {
-  width: 40px;  /* Custom width */
+  width: 40px; /* Custom width */
   height: 40px; /* Custom height */
   background-color: white;
   border: 2px solid #000; /* Border for visibility */
@@ -260,7 +255,7 @@ label {
 
 /* Create a custom checkbox with a pseudo-element */
 label::before {
-  content: '';
+  content: "";
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -274,7 +269,7 @@ label::before {
 
 /* Add an orange check mark when the checkbox is checked */
 input[type="checkbox"]:checked + label::before {
-  content: '✔'; /* Check mark symbol */
+  content: "✔"; /* Check mark symbol */
   color: #e76e28; /* Orange color for the check mark */
   text-align: center; /* Center the check mark */
   font-size: 16px; /* Adjust check mark size */
@@ -289,7 +284,7 @@ input[type="checkbox"]:checked + label::before {
   padding: 15px 30px; /* Larger padding for a bigger button */
   background-color: #ec7602; /* Bright orange color */
   color: white;
-  font-family: 'Quicksand', sans-serif; /* Set the font family */
+  font-family: "Quicksand", sans-serif; /* Set the font family */
   font-size: 20px; /* Larger font size for visibility */
   border: none;
   border-radius: 10px;
@@ -315,42 +310,34 @@ input[type="checkbox"]:checked + label::before {
   flex-direction: column; /* Stack items vertically */
   justify-content: center; /* Center content vertically */
   align-items: center; /* Center items horizontally */
-
-
 }
 
 .white-box {
-  background-color: white; /* White background for the box */
-  border-radius: 10px; /* Rounded corners */
-  padding: 20px; /* Add internal padding */
-  text-align: center; /* Center the content within the box */
-  width: 80%; /* Define the width of the box */
-  margin-bottom: 30px; /* Space between the boxes */
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: left;
+  width: 80%;
+  margin-bottom: 30px;
+  justify-content: left;
 }
 
 .box-content {
-  display: flex; /* Flexbox for even spacing */
-  justify-content: space-between; /* Space between sections */
-  align-items: center; /* Align items vertically */
 }
+
 
 .buttons {
-  display: flex; /* Flexbox to align buttons */
-  justify-content: space-between; /* Even space between buttons */
-}
-
-.buttons button {
   padding: 10px; /* Add padding to the buttons */
   background-color: #ec7602; /* Orange background */
   border: none; /* No border */
   border-radius: 5px; /* Rounded corners */
   color: white; /* White text */
-  font-family: 'Quicksand', sans-serif; /* Set the font family */
+  font-family: "Quicksand", sans-serif; /* Set the font family */
   font-size: 11px; /* Larger font size for visibility */
   cursor: pointer; /* Indicate it's clickable */
 }
 
-.buttons button:hover {
+.buttons:hover {
   background-color: #ac5c00; /* Darker orange on hover */
 }
 /* About Us Section */
@@ -371,8 +358,8 @@ input[type="checkbox"]:checked + label::before {
   border-radius: 24px;
   margin-top: 1%;
   margin-bottom: 5%;
-  margin-left:5%;
-  margin-right:5%;
+  margin-left: 5%;
+  margin-right: 5%;
   width: 50%;
 }
 
@@ -385,8 +372,8 @@ input[type="checkbox"]:checked + label::before {
 .contact-container {
   width: 50%; /* Definir a largura da caixa */
   margin-top: 1%;
-  margin-left:5%;
-  margin-right:5%;
+  margin-left: 5%;
+  margin-right: 5%;
   display: flex;
   flex-direction: column;
 }
@@ -395,12 +382,12 @@ input[type="checkbox"]:checked + label::before {
   text-align: center;
   border-radius: 24px;
   border-color: #172060;
-
 }
 
-input[type="text"], input[type = "email"] {
+input[type="text"],
+input[type="email"] {
   background-color: white;
-  color : black;
+  color: black;
   width: 100%;
   margin: 1%;
   border-radius: 5px;
@@ -408,7 +395,7 @@ input[type="text"], input[type = "email"] {
 
 textarea {
   background-color: white;
-  color : black;
+  color: black;
   width: 100%;
   margin: 1%;
   border-radius: 5px;
@@ -416,23 +403,24 @@ textarea {
 }
 
 /* Estilo para a textarea quando estÃ¡ focada */
-textarea:focus,input[type="text"]:focus, input[type = "email"]:focus{
+textarea:focus,
+input[type="text"]:focus,
+input[type="email"]:focus {
   border-color: #ff9900; /* Cor da borda alterada */
 }
 
 .team-photos {
   display: flex;
-  flex:1;
+  flex: 1;
 }
 .team-photos img {
   border-radius: 24px;
   height: auto;
-  width: 100%
-  
+  width: 100%;
 }
 
-.team_photo { 
-  flex:1;
+.team_photo {
+  flex: 1;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -442,7 +430,6 @@ textarea:focus,input[type="text"]:focus, input[type = "email"]:focus{
   color: white;
   text-align: center;
 }
-
 
 /* End About Us Section */
 
@@ -458,18 +445,14 @@ textarea:focus,input[type="text"]:focus, input[type = "email"]:focus{
   width: 2rem; /* Ajusta o tamanho do ícone de usuário conforme necessário */
   height: 2rem;
   margin-right: 2;
-  
 }
 
 .user-name {
   font-size: 14px; /* Ajusta o tamanho da fonte do nome do usuário */
-  margin-left:0.2rem;
+  margin-left: 0.2rem;
 }
 
-.user-info:hover{
-  transform: scale(1.1); 
+.user-info:hover {
+  transform: scale(1.1);
   text-decoration: underline;
-
 }
-
-

@@ -1,11 +1,9 @@
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
 
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
     apiKey: "AIzaSyAcsgIAPrhau7rYBooLPtM_APbeT0WckIs",
@@ -17,11 +15,11 @@
     appId: "1:874280357227:web:923dea5aa88fc115f0102e",
     measurementId: "G-8PE4BP9MPG"
   };
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 
-    import{getDatabase, ref, child, get, set, update, remove} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+  import{getDatabase, ref, child, get, set, update, remove} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
 const db = getDatabase();
 // Create a reference to the root of the database
@@ -295,13 +293,23 @@ window.process_key_request = function(){
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   let username = currentUser.username;
 
-  //temos de criar um no na base de dados chamado key_request onde as request sao identificadas pelo username 
+  // Get the current timestamp from the browser
+  let timestamp = new Date(Date.now());
 
+  // Format timestamp to dd/mm/yyyy
+  let formattedDay = timestamp.getDate().toString().padStart(2, '0');
+  let formattedMonth = (timestamp.getMonth() + 1).toString().padStart(2, '0');
+  let formattedYear = timestamp.getFullYear();
+  let formattedTimestamp = `${formattedDay}/${formattedMonth}/${formattedYear}`;
+
+
+  //temos de criar um no na base de dados chamado key_request onde as request sao identificadas pelo username 
   let topic = {
       key1: key1Checked,
       key2: key2Checked,
       key3: key3Checked,
-      key4: key4Checked
+      key4: key4Checked,
+      timestamp: formattedTimestamp
   };
 
 // Reference to the Firebase database
@@ -322,6 +330,93 @@ const ref_root = ref(db, "/");
             console.error("Error registering topic:", error);
         });
 }
+
+window.displayKeyRequests = function(){
+  // Reference to the key requests node in Firebase
+  const keyRequestsRef = ref(db,"key_request");
+  const requestsContainer = document.getElementById("requests-container");
+
+  // Fetch key requests from Firebase using get()
+  get(keyRequestsRef).then((snapshot) => {
+    // Clear previous requests from the container
+    requestsContainer.innerHTML = "";
+
+    // Iterate through each key request
+    snapshot.forEach((childSnapshot) => {
+      const username = childSnapshot.key;
+      const requestData = childSnapshot.val();
+
+
+            // Filter keys with true values
+            const requestedKeys = Object.keys(requestData).filter(key => requestData[key] === true);
+
+            // If user has no requested keys, skip to next user
+            if (requestedKeys.length === 0) {
+                return;
+            }
+
+            // Create elements for each request
+            const whiteBox = document.createElement("div");
+            whiteBox.className = "white-box";
+
+            const boxContent = document.createElement("div");
+            boxContent.className = "box-content";
+
+            const userName = document.createElement("div");
+            userName.textContent = "User: " + username;
+            boxContent.appendChild(userName); // Add username to box content
+
+            // Loop through requested keys and display them on new lines
+            requestedKeys.forEach(key => {
+                const keyDescription = document.createElement("div");
+                keyDescription.textContent = key;
+                boxContent.appendChild(keyDescription);
+
+                // Create accept button
+                const acceptButton = document.createElement("button");
+                acceptButton.textContent = "Accept";
+                acceptButton.className = "buttons";
+                acceptButton.onclick = () => {
+                    // Handle accept logic here
+                    console.log("Accepted key:", key);
+                };
+                boxContent.appendChild(acceptButton);
+
+                // Create reject button
+                const rejectButton = document.createElement("button");
+                rejectButton.textContent = "Reject";
+                rejectButton.className = "buttons";
+                rejectButton.onclick = () => {
+                    // Handle reject logic here
+                    console.log("Rejected key:", key);
+                };
+                boxContent.appendChild(rejectButton);
+
+                // Add line break after key and buttons
+                boxContent.appendChild(document.createElement("br"));
+            });
+
+            const requestDate = document.createElement("div");
+            requestDate.textContent = "Request Date: " + requestData.timestamp;
+
+            whiteBox.appendChild(boxContent);
+            whiteBox.appendChild(requestDate);
+            requestsContainer.appendChild(whiteBox);
+        });
+    }).catch((error) => {
+        console.error("Error getting key requests: ", error);
+    });
+
+}
+
+
+
+
+
+
+
+
+
 
 window.userlogged = function(){
   let messageElement = document.getElementById('logged');

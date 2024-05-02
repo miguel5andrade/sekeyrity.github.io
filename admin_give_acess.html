@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css"> <!-- Include your existing CSS -->
 </head>
-<body>
+<body onload="displayKeyRequests()">
     <div class="container">
         <header>
             <a href="index.html">
@@ -28,53 +28,11 @@
 </div>
 </header>
 </div>
-<!-- Vertical section with white rectangular boxes stacked vertically -->
-<div class="vertical-section">
-    <div class="white-box"> <!-- Individual box -->
-        <div class="box-content"> <!-- Flex container for content -->
-            <div>User 1</div> <!-- User name -->
-            <div>Key 1</div> <!-- Key description -->
-            <div>01/01/2024</div> <!-- Date of request -->
-            <div class="buttons"> <!-- Container for buttons -->
-                <button>Accept</button> <!-- Action button 1 -->
-                <button>Reject</button> <!-- Action button 2 -->
-            </div>
-        </div>
+
+ <!-- Vertical section with white rectangular boxes stacked vertically -->
+    <div class="vertical-section" id="requests-container">
+        <!-- Requests will be dynamically added here -->
     </div>
-    <div class="white-box">
-        <div class="box-content">
-            <div>User 2</div>
-            <div>Key 2</div>
-            <div>02/02/2024</div>
-            <div class="buttons">
-                <button>Accept</button>
-                <button>Reject</button>
-            </div>
-        </div>
-    </div>
-    <div class="white-box">
-        <div class="box-content">
-            <div>User 3</div>
-            <div>Key 3</div>
-            <div>03/03/2024</div>
-            <div class="buttons">
-                <button>Accept</button>
-                <button>Reject</button>
-            </div>
-        </div>
-    </div>
-    <div class="white-box">
-        <div class="box-content">
-            <div>User 4</div>
-            <div>Key 4</div>
-            <div>04/04/2024</div>
-            <div class="buttons">
-                <button>Accept</button>
-                <button>Reject</button>
-            </div>
-        </div>
-    </div>
-</div>
     <!-- Script for SHA-256 hashing (if needed) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="index.js" type="module"></script>
