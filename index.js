@@ -305,11 +305,11 @@ window.process_key_request = function(){
 
   //temos de criar um no na base de dados chamado key_request onde as request sao identificadas pelo username 
   let topic = {
-      key1: key1Checked,
-      key2: key2Checked,
-      key3: key3Checked,
-      key4: key4Checked,
-      timestamp: formattedTimestamp
+    "key-01": key1Checked,
+    "key-02": key2Checked,
+    "key-03": key3Checked,
+    "key-04": key4Checked,
+    timestamp: formattedTimestamp
   };
 
   // Reference to the Firebase database
@@ -376,9 +376,27 @@ window.displayKeyRequests = function(){
                 const acceptButton = document.createElement("button");
                 acceptButton.textContent = "Accept";
                 acceptButton.className = "buttons";
+
+                //onclick logic
                 acceptButton.onclick = () => {
-                    // Handle accept logic here
-                    console.log("Accepted key:", key);
+                   const userRef = ref(db,"users/" + username + "/" + key);
+                    set(userRef, true)
+                        .then(() => {
+                            console.log("Key", key, "accepted for user", username);
+                            // Remove the key request
+                            const keyRequestRef = ref(db,"key_request/" + username + "/" + key);
+                            remove(keyRequestRef)
+                                .then(() => {
+                                    console.log("Key request removed");
+                                })
+                                .catch((error) => {
+                                    console.error("Error removing key request:", error);
+                                });
+                        })
+                        .catch((error) => {
+                            console.error("Error accepting key:", error);
+                        })
+                        //window.location.reload();
                 };
                 boxContent.appendChild(acceptButton);
 
@@ -388,6 +406,25 @@ window.displayKeyRequests = function(){
                 rejectButton.className = "buttons";
                 rejectButton.onclick = () => {
                     // Handle reject logic here
+                    const userRef = ref(db,"users/" + username + "/" + key);
+                    set(userRef, false)
+                        .then(() => {
+                            console.log("Key", key, "rejected for user", username);
+                            // Remove the key request
+                            const keyRequestRef = ref(db,"key_request/" + username + "/" + key);
+                            remove(keyRequestRef)
+                                .then(() => {
+                                    console.log("Key request removed");
+                                })
+                                .catch((error) => {
+                                    console.error("Error removing key request:", error);
+                                });
+                        })
+                        .catch((error) => {
+                            console.error("Error rejected key:", error);
+                        })
+
+
                     console.log("Rejected key:", key);
                 };
                 boxContent.appendChild(rejectButton);
