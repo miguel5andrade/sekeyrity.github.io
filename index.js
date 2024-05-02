@@ -134,6 +134,15 @@ window.get_signup_info = function(){
    */
 
   //passar para a janela onde se pedem as permissões 
+  const user = {
+    email: user_email,
+    isAdmin: 0,
+    username: nickname
+  };
+  sessionStorage.setItem('currentUser', JSON.stringify(user)) ;
+
+  window.location.href = "user_key_req.html";
+
 } 
 
 
@@ -190,10 +199,10 @@ window.get_signup_info = function(){
 
 //funcao que processa dados do login
 window.process_login = function(){
-  console.log("entrei");
   let email = document.getElementById("login_email").value;
   let plainPassword = document.getElementById("login_password").value;
   let messageElement = document.getElementById('login_message');
+  let authenticated = false;
 
   //temos de dar hash à password para ser possivel comparar com as da base de dados
   const hashedPassword = hashPassword(plainPassword);
@@ -217,20 +226,39 @@ window.process_login = function(){
           if (hashedPassword === storedPassword) {
             // User autenticado, passar para a próxima página, guardar o user que foi autenticado
             let isAdmin = userData.admin; //verificar se é admin
+            authenticated = true; // Set flag to true
+
+
+            //GUARDAR AS INFOS DO USER AUTENTICADO no storage da sessao
+            const user = {
+                email: email,
+                isAdmin: isAdmin,
+                //Username: userData.username
+            };
+            sessionStorage.setItem('currentUser', JSON.stringify(user)) ;
+            //PARA RECUPERAR NOUTROS SITIOS: const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+
+              
             if(isAdmin === 1){
               // redirecionar para a página dos admins
               window.location.href = "admin_give_acess.html"; 
+              return;
             }else{
               //redirecionar para a página dos users normais
-              window.location.href = "user_key_req.html"; 
+              window.location.href = "user_key_req.html";
+              return;  
 
             }
             
           }
         }
       });
+
       // No matching email found
-      messageElement.textContent = "E-mail or password wrong.";
+      // Check authentication flag
+      if (!authenticated) {
+        messageElement.textContent = "E-mail or password wrong.";
+      }
     } else {
       // No users found in the database
       messageElement.textContent = "E-mail or password wrong.";
