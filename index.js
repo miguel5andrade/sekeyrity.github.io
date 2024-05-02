@@ -274,6 +274,7 @@ window.process_key_request = function(){
   let key2Checkbox = document.getElementById("task2");
   let key3Checkbox = document.getElementById("task3");
   let key4Checkbox = document.getElementById("task4");
+  let messageholder = document.getElementById("key_request_text");
 
   // Check if each checkbox is checked
   let key1Checked = key1Checkbox.checked;
@@ -302,13 +303,12 @@ const ref_root = ref(db, "/");
 
 
 
-    // Perform the update
-    update(ref_root, updates)
-        .then(() => {
-            console.log("Topic registered successfully.");
-            // Redirect or perform other actions as needed
-        })
-        .catch((error) => {
-            console.error("Error registering topic:", error);
-        });
+  // Perform the update
+  update(ref_root, updates)
+      .then(() => {
+        messageholder.textContent = "Request successfull";
+      })
+      .catch((error) => {
+          console.error("Error registering topic:", error);
+      });
 }
