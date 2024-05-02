@@ -422,17 +422,19 @@ textarea:focus,input[type="text"]:focus, input[type = "email"]:focus{
 
 .team-photos {
   display: flex;
+  flex:1;
 }
 .team-photos img {
-  width: 100%;
-  height: auto;
   border-radius: 24px;
+  height: auto;
+  width: 100%
+  
 }
 
 .team_photo { 
-  flex: 1;
-  margin: 0; /* Reset any default margin */
-  padding: 0; /* Reset any default padding */
+  flex:1;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .caption {
@@ -440,6 +442,9 @@ textarea:focus,input[type="text"]:focus, input[type = "email"]:focus{
   color: white;
   text-align: center;
 }
+
+
+/* End About Us Section */
 
 /* Logged as */
 .user-info {
@@ -466,3 +471,5 @@ textarea:focus,input[type="text"]:focus, input[type = "email"]:focus{
   text-decoration: underline;
 
 }
+
+
