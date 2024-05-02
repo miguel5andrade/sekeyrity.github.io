@@ -128,10 +128,6 @@ window.get_signup_info = function(){
   }
 });
 
-  /****************
-   * FALTA ISTO, COMO GUARDAR NA BASE DE DADOS OS PEDIDOS?
-   * 
-   */
 
   //passar para a janela onde se pedem as permissões 
   const user = {
@@ -220,6 +216,7 @@ window.process_login = function(){
         let userData = childSnapshot.val();
         let storedEmail = userData['e-mail'];
         let storedPassword = userData.password; 
+        let username = childSnapshot.key; // Retrieve the node's name (username)
         // Compare the stored email with the provided email
         if (email === storedEmail) {
           // Email match, now compare the password
@@ -233,7 +230,7 @@ window.process_login = function(){
             const user = {
                 email: email,
                 isAdmin: isAdmin,
-                //Username: userData.username
+                username: username
             };
             sessionStorage.setItem('currentUser', JSON.stringify(user)) ;
             //PARA RECUPERAR NOUTROS SITIOS: const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
@@ -267,4 +264,51 @@ window.process_login = function(){
 
   });
 
+}
+
+window.process_key_request = function(){
+  
+
+  // Get all checkboxes by their IDs
+  let key1Checkbox = document.getElementById("task1");
+  let key2Checkbox = document.getElementById("task2");
+  let key3Checkbox = document.getElementById("task3");
+  let key4Checkbox = document.getElementById("task4");
+
+  // Check if each checkbox is checked
+  let key1Checked = key1Checkbox.checked;
+  let key2Checked = key2Checkbox.checked;
+  let key3Checked = key3Checkbox.checked;
+  let key4Checked = key4Checkbox.checked;  
+
+  const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+  let username = currentUser.username;
+
+  //temos de criar um no na base de dados chamado key_request onde as request sao identificadas pelo username 
+
+  let topic = {
+      key1: key1Checked,
+      key2: key2Checked,
+      key3: key3Checked,
+      key4: key4Checked
+  };
+
+// Reference to the Firebase database
+const ref_root = ref(db, "/");
+
+ // Create a new node named "key_request" and store the topic under it
+    let updates = {};
+    updates['/key_request/' + username] = topic;
+
+
+
+    // Perform the update
+    update(ref_root, updates)
+        .then(() => {
+            console.log("Topic registered successfully.");
+            // Redirect or perform other actions as needed
+        })
+        .catch((error) => {
+            console.error("Error registering topic:", error);
+        });
 }
