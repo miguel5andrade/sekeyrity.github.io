@@ -304,10 +304,10 @@ window.process_key_request = function(){
       key4: key4Checked
   };
 
-// Reference to the Firebase database
-const ref_root = ref(db, "/");
+  // Reference to the Firebase database
+  const ref_root = ref(db, "/");
 
- // Create a new node named "key_request" and store the topic under it
+  // Create a new node named "key_request" and store the topic under it
     let updates = {};
     updates['/key_request/' + username] = topic;
 
@@ -321,6 +321,36 @@ const ref_root = ref(db, "/");
         .catch((error) => {
             console.error("Error registering topic:", error);
         });
+}
+
+//Função para aparecer jºa certos nas chaves a que tem acesso
+window.markAccesKey = function(){
+
+  const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+  let username = currentUser.username;
+  const ref_root = ref(db, "/key_request/");
+  const userRef = child(ref_root, username);
+
+  get(userRef).then((snapshot) => {
+
+    if (snapshot.exists()) {
+
+      let keys = ["key1", "key2", "key3", "key4"];
+      let check = ["task1", "task2" , "task3", "task4"];
+
+      keys.forEach((key, index) => {
+        let checkbox = document.getElementById(check[index]);
+        if (snapshot.val() && snapshot.val()[key] == true) {
+          checkbox.checked = true;
+          // checkbox.disabled = true;
+        }
+      });
+    } else {
+      console.log("No data available");
+    }
+  });
+
+ 
 }
 
 window.userlogged = function(){

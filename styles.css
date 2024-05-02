@@ -423,24 +423,30 @@ textarea:focus,input[type="text"]:focus, input[type = "email"]:focus{
 .team-photos {
   display: flex;
   flex:1;
+  justify-content: center;
+
 }
 .team-photos img {
   border-radius: 24px;
   height: auto;
-  width: 100%
-  
+  width: 80%;
+  justify-content: center;
 }
 
 .team_photo { 
   flex:1;
   box-sizing: border-box;
   overflow: hidden;
+  text-align: center;
+  justify-content: center;
 }
 
 .caption {
   font-size: 14px;
   color: white;
   text-align: center;
+  justify-content: center;
+  
 }
 
 
