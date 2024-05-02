@@ -312,3 +312,8 @@ const ref_root = ref(db, "/");
             console.error("Error registering topic:", error);
         });
 }
+window.userlogged = function(){
+  let messageElement = document.getElementById('logged');
+  const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+  messageElement.textContent =currentUser.username;
+}
