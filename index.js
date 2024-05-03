@@ -460,19 +460,19 @@ window.markAccesKey = function(){
 
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   let username = currentUser.username;
-  const ref_root = ref(db, "/key_request/");
+  const ref_root = ref(db, "/users/");
   const userRef = child(ref_root, username);
 
   get(userRef).then((snapshot) => {
 
     if (snapshot.exists()) {
 
-      let keys = ["key1", "key2", "key3", "key4"];
+      let keys = ["key-01", "key-02", "key-03", "key-04"];
       let check = ["task1", "task2" , "task3", "task4"];
 
       keys.forEach((key, index) => {
         let checkbox = document.getElementById(check[index]);
-        if (snapshot.val() && snapshot.val()[key] == true) {
+        if (snapshot.val() && snapshot.val()[key] === true) {
           checkbox.checked = true;
           // checkbox.disabled = true;
         }
