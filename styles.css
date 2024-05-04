@@ -340,6 +340,9 @@ input[type="checkbox"]:checked + label::before {
 .buttons:hover {
   background-color: #ac5c00; /* Darker orange on hover */
 }
+
+
+
 /* About Us Section */
 .container-about-contact {
   display: flex;
@@ -441,6 +444,9 @@ input[type="email"]:focus {
 
 /* End About Us Section */
 
+
+
+
 /* Logged as */
 .user-info {
   display: flex;
@@ -464,3 +470,65 @@ input[type="email"]:focus {
   transform: scale(1.1);
   text-decoration: underline;
 }
+/*End logged as*/
+
+
+/* admin_acess_managment*/
+
+.box-admin-acess-managment{
+    display: flex;
+    background-color:#ff9900 ;
+    border-radius:2ch;
+    padding: 1%;
+    margin: 5%;
+    justify-content: center;
+    flex: 1 1 13%;
+    max-width: 13%;
+    
+}
+
+.content-box-admin-acess-managment {
+  text-align: center;
+  line-height: 250%;
+
+}
+
+
+.teste-section {
+  display: flex; /* Use Flexbox to stack boxes vertically */
+  justify-content: left; /* Center content vertically */
+  flex-wrap: wrap;
+
+}
+
+.give-acess-button{
+    padding: 10px; /* Add padding to the buttons */
+    background-color: green; /* Orange background */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    color: white; /* White text */
+    font-family: "Quicksand", sans-serif; /* Set the font family */
+    font-size: 11px; /* Larger font size for visibility */
+    cursor: pointer; /* Indicate it's clickable */
+}
+.give-acess-button:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s;
+}
+
+.remove-acess-button{
+  padding: 10px; /* Add padding to the buttons */
+  background-color: red; /* Orange background */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  color: white; /* White text */
+  font-family: "Quicksand", sans-serif; /* Set the font family */
+  font-size: 11px; /* Larger font size for visibility */
+  cursor: pointer; /* Indicate it's clickable */
+}
+.remove-acess-button:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s;
+}
+
+/* End admin_acess_managment */

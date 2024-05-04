@@ -149,58 +149,6 @@ window.get_signup_info = function(){
  
 } 
 
-
-
-//Enviar email
-
-      /*
-      const express = require('express');
-      const nodemailer = require('nodemailer');
-      const bodyParser = require('body-parser');
-
-      const PORT = process.env.PORT || 3000;
-
-      // Configurar o nodemailer
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'sekeyrity@gmail.com',
-          pass: 'eletrocap2324pic1'
-        }
-      });
-
-      // Configurar o body-parser
-      app.use(bodyParser.urlencoded({ extended: false }));
-      app.use(bodyParser.json());
-
-      // Rota para lidar com o envio de e-mails
-      app.post('/send-email', (req, res) => {
-        const { name, email, subject, message } = req.body;
-
-        const mailOptions = {
-          from: email, // Usar o endereço de e-mail fornecido pelo usuário como remetente
-          to: 'sekeyrity@gmail.com', // Endereço de e-mail para onde os e-mails serão enviados
-          subject: subject,
-          text: `Nome: ${name}\nE-mail: ${email}\nMensagem: ${message}`
-        };
-
-      transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.log(error);
-            res.status(500).send('Ocorreu um erro ao enviar o e-mail.');
-          } else {
-            console.log('E-mail enviado: ' + info.response);
-            res.send('Obrigado por entrar em contato! Seu e-mail foi enviado com sucesso.');
-          }
-        });
-      });
-
-      app.listen(PORT, () => {
-        console.log(`Servidor rodando na porta ${PORT}`);
-      });*/
-
-
-
 //funcao que processa dados do login
 window.process_login = function(){
   let email = document.getElementById("login_email").value;
@@ -277,18 +225,14 @@ window.process_login = function(){
 window.process_key_request = function(){
   
 
-  // Get all checkboxes by their IDs
-  let key1Checkbox = document.getElementById("task1");
-  let key2Checkbox = document.getElementById("task2");
-  let key3Checkbox = document.getElementById("task3");
-  let key4Checkbox = document.getElementById("task4");
-  let messageholder = document.getElementById("key_request_text");
-
-  // Check if each checkbox is checked
-  let key1Checked = key1Checkbox.checked;
-  let key2Checked = key2Checkbox.checked;
-  let key3Checked = key3Checkbox.checked;
-  let key4Checked = key4Checkbox.checked;  
+  
+  const checkboxToKeyMap = {
+    "task1": "key-01",
+    "task2": "key-02",
+    "task3": "key-03",
+    "task4": "key-04"
+  };
+ let messageholder = document.getElementById("key_request_text");
 
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   let username = currentUser.username;
@@ -302,33 +246,33 @@ window.process_key_request = function(){
   let formattedYear = timestamp.getFullYear();
   let formattedTimestamp = `${formattedDay}/${formattedMonth}/${formattedYear}`;
 
-
-  //temos de criar um no na base de dados chamado key_request onde as request sao identificadas pelo username 
-  let topic = {
-    "key-01": key1Checked,
-    "key-02": key2Checked,
-    "key-03": key3Checked,
-    "key-04": key4Checked,
+  let topic={
     timestamp: formattedTimestamp
-  };
+  }
+  
+  Object.entries(checkboxToKeyMap).forEach(([checkboxId, key]) => {
+    let checkbox = document.getElementById(checkboxId);
+    
+    if (checkbox.checked) {
+      topic[key] = true;
+    }
+  });
 
   // Reference to the Firebase database
   const ref_root = ref(db, "/");
 
   // Create a new node named "key_request" and store the topic under it
-    let updates = {};
-    updates['/key_request/' + username] = topic;
+  let updates = {};
+  updates['/key_request/' + username] = topic;
 
-
-
-    // Perform the update
-    update(ref_root, updates)
-        .then(() => {
-            messageholder.textContent = "Request successfull";
-        })
-        .catch((error) => {
-            console.error("Error registering topic:", error);
-        });
+  // Perform the update
+  update(ref_root, updates)
+      .then(() => {
+          messageholder.textContent = "Request successfull";
+      })
+      .catch((error) => {
+          console.error("Error registering topic:", error);
+      });
 }
 
 window.displayKeyRequests = function(){
@@ -347,91 +291,92 @@ window.displayKeyRequests = function(){
       const requestData = childSnapshot.val();
 
 
-            // Filter keys with true values
-            const requestedKeys = Object.keys(requestData).filter(key => requestData[key] === true);
+        // Filter keys with true values
+        const requestedKeys = Object.keys(requestData).filter(key => requestData[key] === true);
 
-            // If user has no requested keys, skip to next user
-            if (requestedKeys.length === 0) {
-                return;
-            }
+        // If user has no requested keys, skip to next user
+        if (requestedKeys.length === 0) {
+            return;
+        }
 
-            // Create elements for each request
-            const whiteBox = document.createElement("div");
-            whiteBox.className = "white-box";
+        // Create elements for each request
+        const whiteBox = document.createElement("div");
+        whiteBox.className = "white-box";
 
-            const boxContent = document.createElement("div");
-            boxContent.className = "box-content";
+        const boxContent = document.createElement("div");
+        boxContent.className = "box-content";
 
-            const userName = document.createElement("div");
-            userName.textContent = "User: " + username;
-            boxContent.appendChild(userName); // Add username to box content
+        const userName = document.createElement("div");
+        userName.textContent = "User: " + username;
+        boxContent.appendChild(userName); // Add username to box content
 
-            // Loop through requested keys and display them on new lines
-            requestedKeys.forEach(key => {
-                const keyDescription = document.createElement("div");
-                keyDescription.textContent = key;
-                boxContent.appendChild(keyDescription);
+        // Loop through requested keys and display them on new lines
+        requestedKeys.forEach(key => {
+            const keyDescription = document.createElement("div");
+            keyDescription.textContent = key;
+            boxContent.appendChild(keyDescription);
 
-                // Create accept button
-                const acceptButton = document.createElement("button");
-                acceptButton.textContent = "Accept";
-                acceptButton.className = "buttons";
+            // Create accept button
+            const acceptButton = document.createElement("button");
+            acceptButton.textContent = "Accept";
+            acceptButton.className = "buttons";
 
-                //onclick logic
-                acceptButton.onclick = () => {
-                   const userRef = ref(db,"users/" + username + "/" + key);
-                    set(userRef, true)
-                        .then(() => {
-                            console.log("Key", key, "accepted for user", username);
-                            // Remove the key request
-                            const keyRequestRef = ref(db,"key_request/" + username + "/" + key);
-                            remove(keyRequestRef)
-                                .then(() => {
-                                    console.log("Key request removed");
-                                })
-                                .catch((error) => {
-                                    console.error("Error removing key request:", error);
-                                });
-                        })
-                        .catch((error) => {
-                            console.error("Error accepting key:", error);
-                        })
-                        //window.location.reload();
-                };
-                boxContent.appendChild(acceptButton);
+            //onclick logic
+            acceptButton.onclick = () => {
+                const userRef = ref(db,"users/" + username + "/" + key);
+                set(userRef, true)
+                    .then(() => {
+                        console.log("Key", key, "accepted for user", username);
+                        // Remove the key request
+                        const keyRequestRef = ref(db,"key_request/" + username + "/" + key);
+                        remove(keyRequestRef)
+                            .then(() => {
+                                console.log("Key request removed");
+                            })
+                            .catch((error) => {
+                                console.error("Error removing key request:", error);
+                            });
+                    })
+                    .catch((error) => {
+                        console.error("Error accepting key:", error);
+                    })
 
-                // Create reject button
-                const rejectButton = document.createElement("button");
-                rejectButton.textContent = "Reject";
-                rejectButton.className = "buttons";
-                rejectButton.onclick = () => {
-                    // Handle reject logic here
-                    const userRef = ref(db,"users/" + username + "/" + key);
-                    set(userRef, false)
-                        .then(() => {
-                            console.log("Key", key, "rejected for user", username);
-                            // Remove the key request
-                            const keyRequestRef = ref(db,"key_request/" + username + "/" + key);
-                            remove(keyRequestRef)
-                                .then(() => {
-                                    console.log("Key request removed");
-                                })
-                                .catch((error) => {
-                                    console.error("Error removing key request:", error);
-                                });
-                        })
-                        .catch((error) => {
-                            console.error("Error rejected key:", error);
-                        })
+            };
+            boxContent.appendChild(acceptButton);
+
+            // Create reject button
+            const rejectButton = document.createElement("button");
+            rejectButton.textContent = "Reject";
+            rejectButton.className = "buttons";
+            rejectButton.onclick = () => {
+                // Handle reject logic here
+                const userRef = ref(db,"users/" + username + "/" + key);
+                set(userRef, false)
+                    .then(() => {
+                        console.log("Key", key, "rejected for user", username);
+                        // Remove the key request
+                        const keyRequestRef = ref(db,"key_request/" + username + "/" + key);
+                        remove(keyRequestRef)
+                            .then(() => {
+                                console.log("Key request removed");
+                            })
+                            .catch((error) => {
+                                console.error("Error removing key request:", error);
+                            });
+                    })
+                    .catch((error) => {
+                        console.error("Error rejected key:", error);
+                    })
 
 
-                    console.log("Rejected key:", key);
-                };
-                boxContent.appendChild(rejectButton);
+                console.log("Rejected key:", key);
 
-                // Add line break after key and buttons
-                boxContent.appendChild(document.createElement("br"));
-            });
+            };
+            boxContent.appendChild(rejectButton);
+
+            // Add line break after key and buttons
+            boxContent.appendChild(document.createElement("br"));
+          });
 
             const requestDate = document.createElement("div");
             requestDate.textContent = "Request Date: " + requestData.timestamp;
@@ -446,14 +391,85 @@ window.displayKeyRequests = function(){
 
 }
 
+//Função que gere todos os acessos de cada user
+window.remove_and_give_acess = function(){
+  // Reference to the key requests node in Firebase
+  const users = ref(db,"users");
+  const requestsContainer = document.getElementById("acess-managment");
+
+  // Fetch key requests from Firebase using get()
+  get(users).then((snapshot) => {
+    // Clear previous requests from the container
+    requestsContainer.innerHTML = "";
+    
+    
+    //Iterate through each users
+    snapshot.forEach((childSnapshot) => {
+      const userData = childSnapshot.val();
+      const username = childSnapshot.key; 
+      console.log(userData);
+      // Create elements for acess managment
+      const whiteBox = document.createElement("div");
+      whiteBox.className = "box-admin-acess-managment";
+
+      const boxContent = document.createElement("div");
+      boxContent.className = "content-box-admin-acess-managment";
+
+      const userName = document.createElement("div");
+      userName.textContent = "User: " + username;
+      boxContent.appendChild(userName); // Add username to box content
+
+      // Iterate through each user data
+      Object.entries(userData).forEach(([key, value]) => {
+        // Check data is a key
+        if (key.startsWith("key-")) {
+         
+          const keyDescription = document.createElement("div");
+          keyDescription.textContent = key;
+          boxContent.appendChild(keyDescription);
+
+           
+
+          //button com give acess ou remove acess
+          if (value) {
+            // Create button
+            const button = document.createElement("button");
+            button.className = "remove-acess-button";
+
+            button.textContent = "Remove Acess";
+            button.addEventListener("click", () => {
+                // lógica para remover o acesso aqui
+                const userRef = ref(db,"users/" + username + "/" + key);
+                set(userRef, false)
+                location.reload();
+             });
+          boxContent.appendChild(button);
+          } else {
+            // Create button
+            const button = document.createElement("button");
+            button.className = "give-acess-button";
+
+            button.textContent = "Give Acess";
+            button.addEventListener("click", () => {
+              // lógica para conceder o acesso aqui
+              const userRef = ref(db,"users/" + username + "/" + key);
+              set(userRef, true)
+              location.reload();
+            });
+           boxContent.appendChild(button);
+    }
+        }
+      })
+      whiteBox.appendChild(boxContent);
+      requestsContainer.appendChild(whiteBox);
+
+    })
+  }).catch((error) => {
+    console.error("Error getting users: ", error);
+  });
 
 
-
-
-
-
-
-
+}
 
 //Função para aparecer jºa certos nas chaves a que tem acesso
 window.markAccesKey = function(){
@@ -474,7 +490,7 @@ window.markAccesKey = function(){
         let checkbox = document.getElementById(check[index]);
         if (snapshot.val() && snapshot.val()[key] === true) {
           checkbox.checked = true;
-          // checkbox.disabled = true;
+          //checkbox.disabled = true;
         }
       });
     } else {

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simple Page</title>
     <!-- Import Quicksand from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css"> <!-- Include your existing CSS -->
-</head>
-<body onload="displayKeyRequests()">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body onload = "remove_and_give_acess()">
     <div class="container">
         <header>
             <a href="index.html">
@@ -23,19 +26,14 @@
         </header>
     </div>
 
-   <!-- Text on the top-left corner -->
-   <div class="top-left-text">
-    Pending Requests
-</div>
-</header>
-</div>
+    <div class="top-left-text">Acess Management</div>
 
- <!-- Vertical section with white rectangular boxes stacked vertically -->
-    <div class="vertical-section" id="requests-container">
+    <div class="teste-section" id="acess-managment">
         <!-- Requests will be dynamically added here -->
     </div>
-    <!-- Script for SHA-256 hashing (if needed) -->
+
+    <!-- script de hashing SHA-256 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="index.js" type="module"></script>
-</body>
+  </body>
 </html>
