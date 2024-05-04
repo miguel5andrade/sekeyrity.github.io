@@ -194,7 +194,7 @@ window.process_login = function(){
               
             if(isAdmin === 1){
               // redirecionar para a página dos admins
-              window.location.href = "admin_give_acess.html"; 
+              window.location.href = "admin_acess_managment.html"; 
               return;
             }else{
               //redirecionar para a página dos users normais
