@@ -506,3 +506,66 @@ window.userlogged = function(){
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   messageElement.textContent =currentUser.username;
 }
+
+window.display_key_movements = function(){
+// Reference to the movements node in Firebase
+    const movementsRef = ref(db, "movements");
+    const movementsContainer = document.getElementById("movements-container");
+
+    // Fetch movements from Firebase using get()
+    get(movementsRef).then((snapshot) => {
+        // Clear previous movements from the container
+        movementsContainer.innerHTML = "";
+
+        // Iterate through each movement
+        snapshot.forEach((childSnapshot) => {
+            const timestamp = childSnapshot.key;
+            const movementData = childSnapshot.val();
+
+            // Create elements for each movement
+            const whiteBox = document.createElement("div");
+            whiteBox.className = "white-box";
+
+            const boxContent = document.createElement("div");
+            boxContent.className = "box-content";
+
+            const movementTimestamp = document.createElement("div");
+            movementTimestamp.textContent = "Timestamp: " + timestamp;
+            boxContent.appendChild(movementTimestamp); // Add timestamp to box content
+
+            // Extract movement details
+            const { username, key_id, take_key, return_key } = movementData;
+
+            // Display username and key ID
+            const userName = document.createElement("div");
+            userName.textContent = "User: " + username;
+            boxContent.appendChild(userName);
+
+            const keyId = document.createElement("div");
+            keyId.textContent = "Key ID: " + key_id;
+            boxContent.appendChild(keyId);
+
+            // Determine the type of movement
+            let movementType = "";
+            if (return_key) {
+                movementType = "Return";
+            } else if (take_key) {
+                movementType = "Take";
+            }
+            const movementTypeElement = document.createElement("div");
+            movementTypeElement.textContent = "Movement Type: " + movementType;
+            boxContent.appendChild(movementTypeElement);
+
+            // Add line break after each movement
+            boxContent.appendChild(document.createElement("br"));
+
+            whiteBox.appendChild(boxContent);
+            movementsContainer.appendChild(whiteBox);
+        });
+    }).catch((error) => {
+        console.error("Error getting movements: ", error);
+    });
+
+
+};
+
