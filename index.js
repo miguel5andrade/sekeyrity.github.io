@@ -1,4 +1,4 @@
-  // Import the functions you need from the SDKs you need
+// Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
 
@@ -574,6 +574,14 @@ window.display_key_movements = function(){
             movementTypeElement.textContent = "Movement Type: " + movementType;
             boxContent.appendChild(movementTypeElement);
 
+            // Add "notify" button if movement type is "take"
+            if (movementType === "Take") {
+              const notifyButton = document.createElement("button");
+              notifyButton.textContent = "Notify";
+              notifyButton.className = "notify-button";
+              boxContent.appendChild(notifyButton);
+          }
+
             // Add line break after each movement
             boxContent.appendChild(document.createElement("br"));
 
@@ -584,6 +592,61 @@ window.display_key_movements = function(){
         console.error("Error getting movements: ", error);
     });
 
+    // Add click event listener to the "Notify" button
+    const notifyButton = document.createElement("button");
+    notifyButton.textContent = "Notify";
+    notifyButton.className = "notify-button";
+    notifyButton.onclick = function() {
+        // Make an HTTP request to trigger the Cloud Function
+        fetch("https://sekeyrity-c3b78-default-rtdb.europe-west1.firebasedatabase.app")
+            .then(response => {
+                if (response.ok) {
+                    console.log('Email sent successfully');
+                } else {
+                    console.error('Failed to send email');
+                }
+            })
+            .catch(error => console.error('Error sending email:', error));
+    };
+    boxContent.appendChild(notifyButton);
+
 
 };
 
+//tentativa email
+// functions/index.js
+const functions = require('firebase-functions');
+const sgMail = require('@sendgrid/mail');
+
+// Initialize SendGrid with your API key
+sgMail.setApiKey(apiKey);
+
+// Define your Cloud Function
+exports.sendEmail = functions.https.onRequest((req, res) => {
+  const msg = {
+    to: 'brunarsferreira@tecnico.ulisboa.pt', // Change this to your recipient email address
+    from: 'your@example.com', // Change this to your verified sender
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+  };
+
+  sgMail.send(msg)
+    .then(() => res.send('Email sent successfully'))
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error sending email');
+    });
+});
+
+function sendEmailNotification() {
+  fetch(databaseURL)
+      .then(response => {
+          if (response.ok) {
+              console.log('Email sent successfully');
+          } else {
+              console.error('Failed to send email');
+          }
+      })
+      .catch(error => console.error('Error sending email:', error));
+}
