@@ -108,67 +108,61 @@ window.get_signup_info = function(){
       return;
   }
     
-  //NAO ESTA A FUNCIONAR NAO SEI PQ
-  // // Verifying if the username already exists in the database
-  // get(child(ref_root, 'users/' + nickname)).then((snapshot) =>{
-  //   if(snapshot.exists){
-  //     // If the username already exists, prompt the user to choose another
-  //     messageElement.textContent = "Username already taken, choose another."; 
-  //     returnflag = 1; // Set returnflag to 1 if the username exists
-  //   }
-  // }).catch((error) => {
-  //   console.error("Error getting user data:", error);
-  // }).finally(() => {
-  //   // Check returnflag and return if it's set to 1
-  //   if(returnflag === 1){
-  //     return;
-  //   }
-  // });
+      
+  // Verifying if the username already exists in the database
+  get(child(ref_root, 'users/' + nickname)).then((snapshot) => {
+    if (snapshot.exists) {
+      // If the username already exists, prompt the user to choose another
+      messageElement.textContent = "Username already taken, choose another."; 
+      return; // Exit the function if username exists
+    } else {
+      // Proceed with the rest of the function if username doesn't exist
 
-  //se passarmos todos estas verificações já podemos alterar as informações na base de dados
-
-  // Update the default user's password, email, and node name, para fazer isto vamos copiar o conteudo de default para outro no e apagar o default
-  get(child(ref_root, 'users/default' + codeString)).then((snapshot) => {
-    if (snapshot.exists()) {
-        const userData = snapshot.val();
-        
-        // Set the data under the new nickname
-        set(child(ref_root, 'users/' + nickname), userData).then(() => {
+      //se passarmos todos estas verificações já podemos alterar as informações na base de dados
+      // Update the default user's password, email, and node name
+      get(child(ref_root, 'users/default' + codeString)).then((snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          
+          // Set the data under the new nickname
+          set(child(ref_root, 'users/' + nickname), userData).then(() => {
             // New nickname node created successfully, now remove the old 'default' node
             remove(child(ref_root, 'users/default' + codeString)).then(() => {
-                // Default user node removed successfully
-                // Update the email and password under the new nickname
-                update(ref_root, {
-                    ['users/' + nickname + '/e-mail']: user_email,
-                    ['users/' + nickname + '/password']: hashedPassword
-                }).then(() => {
-                    // Email and password updated successfully under the new nickname
-                    // After all operations complete successfully, redirect the user
-                    //passar para a janela onde se pedem as permissões 
-                    const user = {
-                      email: user_email,
-                      isAdmin: 0,
-                      username: nickname
-                    };
-                    sessionStorage.setItem('currentUser', JSON.stringify(user)) ;
-
-
-                    window.location.href = "user_key_req.html";
-                }).catch((error) => {
-                    console.error("Error updating email and password:", error);
-                });
+              // Default user node removed successfully
+              // Update the email and password under the new nickname
+              update(ref_root, {
+                ['users/' + nickname + '/e-mail']: user_email,
+                ['users/' + nickname + '/password']: hashedPassword
+              }).then(() => {
+                // Email and password updated successfully under the new nickname
+                // After all operations complete successfully, redirect the user
+                //passar para a janela onde se pedem as permissões 
+                const user = {
+                  email: user_email,
+                  isAdmin: 0,
+                  username: nickname
+                };
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+                window.location.href = "user_key_req.html";
+              }).catch((error) => {
+                console.error("Error updating email and password:", error);
+              });
             }).catch((error) => {
-                console.error("Error removing default user node:", error);
+              console.error("Error removing default user node:", error);
             });
-        }).catch((error) => {
+          }).catch((error) => {
             console.error("Error setting data under new nickname:", error);
-        });
-    } else {
-        console.error("User data for 'default"+ codeString+ "' node does not exist.");
+          });
+        } else {
+          console.error("User data for 'default"+ codeString+ "' node does not exist.");
+        }
+      }).catch((error) => {
+        console.error("Error getting user data:", error);
+      });
     }
-}).catch((error) => {
+  }).catch((error) => {
     console.error("Error getting user data:", error);
-});
+  });
 
  
 } 
