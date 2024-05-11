@@ -25,12 +25,16 @@ const db = getDatabase();
 // Create a reference to the root of the database
 const ref_root = ref(db, "/");
 
+
+
 //Houve a submissao de um codigo no site temos de verificar na base de dados
 window.code_submited = function() {
   let codeInput = document.getElementById('codeInput');
   let codeString = codeInput.value;   //codigo inserido
 
-  const default_user = child(ref_root, 'users/default');
+  sessionStorage.setItem('codeString', codeString); //guardar para ser usado noutra funcao
+
+  const default_user = child(ref_root, 'users/default' + codeString);
 
 // get the default users
 get(default_user).then((snapshot) => {
@@ -55,7 +59,7 @@ get(default_user).then((snapshot) => {
     }
   } else {
     var messageElement = document.getElementById('insert_message');
-    messageElement.textContent = "Please scan your card again."; // Set the message content
+    messageElement.textContent = "Incorrect code. Please scan your card again."; // Set the message content
   }
 }).catch((error) => {
   console.error("Error reading default user:", error);
@@ -68,14 +72,17 @@ function hashPassword(password) {
 }
 
 window.get_signup_info = function(){
- let nickname = document.getElementById('nickname').value;
+  let codeString = sessionStorage.getItem('codeString');    //código do user, sacado na funcao code_submited
+  let nickname = document.getElementById('nickname').value;
   let user_email = document.getElementById('emailInput').value;
   let password = document.getElementById('passwordInput').value;
   let cpassword = document.getElementById('cpasswordInput').value;
 
+  let returnflag = 0;
+
   let messageElement = document.getElementById('insert_info_message'); //placeholder da mensagem por cima dos campos de inserção
   //verificar se todos os campos têm valores
-  if(user_email === "" || password === "" || cpassword === ""){
+  if(user_email === "" || password === "" || cpassword === "" || nickname === ""){
     messageElement.textContent = "Please fill in all fields."; // Set the message content
     return;
   }
@@ -100,18 +107,35 @@ window.get_signup_info = function(){
       messageElement.textContent = "The passwords have to match."; 
       return;
   }
-   
+    
+  //NAO ESTA A FUNCIONAR NAO SEI PQ
+  // // Verifying if the username already exists in the database
+  // get(child(ref_root, 'users/' + nickname)).then((snapshot) =>{
+  //   if(snapshot.exists){
+  //     // If the username already exists, prompt the user to choose another
+  //     messageElement.textContent = "Username already taken, choose another."; 
+  //     returnflag = 1; // Set returnflag to 1 if the username exists
+  //   }
+  // }).catch((error) => {
+  //   console.error("Error getting user data:", error);
+  // }).finally(() => {
+  //   // Check returnflag and return if it's set to 1
+  //   if(returnflag === 1){
+  //     return;
+  //   }
+  // });
+
   //se passarmos todos estas verificações já podemos alterar as informações na base de dados
 
   // Update the default user's password, email, and node name, para fazer isto vamos copiar o conteudo de default para outro no e apagar o default
-  get(child(ref_root, 'users/default')).then((snapshot) => {
+  get(child(ref_root, 'users/default' + codeString)).then((snapshot) => {
     if (snapshot.exists()) {
         const userData = snapshot.val();
         
         // Set the data under the new nickname
         set(child(ref_root, 'users/' + nickname), userData).then(() => {
             // New nickname node created successfully, now remove the old 'default' node
-            remove(child(ref_root, 'users/default')).then(() => {
+            remove(child(ref_root, 'users/default' + codeString)).then(() => {
                 // Default user node removed successfully
                 // Update the email and password under the new nickname
                 update(ref_root, {
@@ -140,7 +164,7 @@ window.get_signup_info = function(){
             console.error("Error setting data under new nickname:", error);
         });
     } else {
-        console.error("User data for 'default' node does not exist.");
+        console.error("User data for 'default"+ codeString+ "' node does not exist.");
     }
 }).catch((error) => {
     console.error("Error getting user data:", error);
