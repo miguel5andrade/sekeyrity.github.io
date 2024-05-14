@@ -27,6 +27,8 @@ const ref_root = ref(db, "/");
 
 
 
+
+
 //Houve a submissao de um codigo no site temos de verificar na base de dados
 window.code_submited = function() {
   let codeInput = document.getElementById('codeInput');
@@ -425,7 +427,7 @@ window.remove_and_give_acess = function(){
     snapshot.forEach((childSnapshot) => {
       const userData = childSnapshot.val();
       const username = childSnapshot.key; 
-      console.log(userData);
+      //console.log(userData);
       // Create elements for acess managment
       const whiteBox = document.createElement("div");
       whiteBox.className = "box-admin-acess-managment";
@@ -526,6 +528,11 @@ window.userlogged = function(){
 }
 
 window.display_key_movements = function(){
+
+  // Initialize EmailJS with your user ID
+  emailjs.init('_StS_RLq9GmYdsKr4');
+
+
 // Reference to the movements node in Firebase
     const movementsRef = ref(db, "movements");
     const movementsContainer = document.getElementById("movements-container");
@@ -576,9 +583,48 @@ window.display_key_movements = function(){
 
             // Add "notify" button if movement type is "take"
             if (movementType === "Take") {
+              
               const notifyButton = document.createElement("button");
               notifyButton.textContent = "Notify";
               notifyButton.className = "notify-button";
+              notifyButton.onclick =  function() {
+                //sacar o email deste user
+                let user_ref = ref(db, "users/" + username)
+                get(user_ref).then((snapshot) => {
+
+                if (snapshot.exists()) {
+                  let Userdata = snapshot.val();
+                  let userEmail =  Userdata['e-mail']; 
+                  
+                
+                // Send email using EmailJS
+                emailjs.send('service_civza6t', 'template_pfno3fu', {
+                    to_name: username,
+                    from_name: 'Sekeyrity',
+                    message: 'This is a test email sent using EmailJS!',
+                    to_email:userEmail
+                })
+                .then(function(response) {
+                    console.log('Email sent successfully:' + userEmail, response);
+                }, function(error) {
+                    console.error('Error sending email:' + userEmail, error);
+                });
+
+
+
+
+
+                  
+                   } else {
+                    console.log("No data available");
+                   }
+              });
+
+
+
+                
+                  
+              };
               boxContent.appendChild(notifyButton);
           }
 
@@ -592,61 +638,5 @@ window.display_key_movements = function(){
         console.error("Error getting movements: ", error);
     });
 
-    // Add click event listener to the "Notify" button
-    const notifyButton = document.createElement("button");
-    notifyButton.textContent = "Notify";
-    notifyButton.className = "notify-button";
-    notifyButton.onclick = function() {
-        // Make an HTTP request to trigger the Cloud Function
-        fetch("https://sekeyrity-c3b78-default-rtdb.europe-west1.firebasedatabase.app")
-            .then(response => {
-                if (response.ok) {
-                    console.log('Email sent successfully');
-                } else {
-                    console.error('Failed to send email');
-                }
-            })
-            .catch(error => console.error('Error sending email:', error));
-    };
-    boxContent.appendChild(notifyButton);
-
-
+   
 };
-
-//tentativa email
-// functions/index.js
-const functions = require('firebase-functions');
-const sgMail = require('@sendgrid/mail');
-
-// Initialize SendGrid with your API key
-sgMail.setApiKey(apiKey);
-
-// Define your Cloud Function
-exports.sendEmail = functions.https.onRequest((req, res) => {
-  const msg = {
-    to: 'brunarsferreira@tecnico.ulisboa.pt', // Change this to your recipient email address
-    from: 'your@example.com', // Change this to your verified sender
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-  };
-
-  sgMail.send(msg)
-    .then(() => res.send('Email sent successfully'))
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error sending email');
-    });
-});
-
-function sendEmailNotification() {
-  fetch(databaseURL)
-      .then(response => {
-          if (response.ok) {
-              console.log('Email sent successfully');
-          } else {
-              console.error('Failed to send email');
-          }
-      })
-      .catch(error => console.error('Error sending email:', error));
-}
