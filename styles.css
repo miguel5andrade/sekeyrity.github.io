@@ -355,15 +355,15 @@ input[type="checkbox"]:checked + label::before {
 .about-us-container {
   display: flex;
   flex-direction: column;
-  background-color: #172060;
+  background-color: rgba(23, 32, 96, 0.4); /* Adjust the alpha value (0.7 in this example) to control transparency */
   color: #fff;
   text-align: justify; /* Alinhar o texto Ã  esquerda */
-  border-radius: 24px;
+  border-radius: 20px;
   margin-top: 1%;
   margin-bottom: 5%;
   margin-left: 5%;
   margin-right: 5%;
-  width: 50%;
+  width: 55%;
 }
 
 .title {
@@ -420,9 +420,9 @@ input[type="email"]:focus {
 
 }
 .team-photos img {
-  border-radius: 24px;
+  border-radius: 15px;
   height: auto;
-  width: 100%
+  width: 85%
   
 }
 
