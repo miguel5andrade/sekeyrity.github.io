@@ -527,13 +527,34 @@ window.userlogged = function(){
   messageElement.textContent =currentUser.username;
 }
 
-window.display_key_movements = function(){
 
-  // Initialize EmailJS with your user ID
-  emailjs.init('_StS_RLq9GmYdsKr4');
+function formatDateTime(input) {
+    // Split the date and time parts
+    let [datePart, timePart] = input.split(' : ');
+
+    // Further split the time part into components
+    let timeComponents = timePart.split('-');
+
+    // Get the hours and minutes
+    let hours = timeComponents[0];
+    let minutes = timeComponents[1];
+
+    // Construct the new time string in the desired format
+    let formattedTime = `${hours}h${minutes}m`;
+
+    // Combine the date and new time format
+    let formattedDateTime = `${datePart}: ${formattedTime}`;
+
+    return formattedDateTime;
+}
 
 
-// Reference to the movements node in Firebase
+
+window.display_key_movements = function() {
+    // Initialize EmailJS with your user ID
+    emailjs.init('_StS_RLq9GmYdsKr4');
+
+    // Reference to the movements node in Firebase
     const movementsRef = ref(db, "movements");
     const movementsContainer = document.getElementById("movements-container");
 
@@ -542,11 +563,21 @@ window.display_key_movements = function(){
         // Clear previous movements from the container
         movementsContainer.innerHTML = "";
 
-        // Iterate through each movement
+        // Collect movements in an array
+        let movements = [];
+
+        // Iterate through each movement and collect data
         snapshot.forEach((childSnapshot) => {
             const timestamp = childSnapshot.key;
             const movementData = childSnapshot.val();
+            movements.push({ timestamp, movementData });
+        });
 
+        // Reverse the array to display the most recent movements at the top
+        movements.reverse();
+
+        // Append each movement to the container in the reversed order
+        movements.forEach(({ timestamp, movementData }) => {
             // Create elements for each movement
             const whiteBox = document.createElement("div");
             whiteBox.className = "white-box";
@@ -554,12 +585,10 @@ window.display_key_movements = function(){
             const boxContent = document.createElement("div");
             boxContent.className = "box-content";
 
-            const movementTimestamp = document.createElement("div");
-            movementTimestamp.textContent = "Timestamp: " + timestamp;
-            boxContent.appendChild(movementTimestamp); // Add timestamp to box content
+          
 
             // Extract movement details
-            const { username, key_id, take_key, return_key } = movementData;
+            const { username, key_id, take_key, return_key, return_time } = movementData;
 
             // Display username and key ID
             const userName = document.createElement("div");
@@ -570,63 +599,59 @@ window.display_key_movements = function(){
             keyId.textContent = "Key ID: " + key_id;
             boxContent.appendChild(keyId);
 
+            const movementTimestamp = document.createElement("div");
+            movementTimestamp.textContent = "Was taken at: " + formatDateTime(timestamp);
+            boxContent.appendChild(movementTimestamp); // Add timestamp to box content
+
             // Determine the type of movement
             let movementType = "";
-            if (return_key) {
-                movementType = "Return";
+            const movementTypeElement = document.createElement("div");
+            
+            if (return_key && take_key) {
+                movementType = "Take and respective return";
+                movementTypeElement.textContent = "Movement Type: " + movementType;
+                // Display return time
+                const movementReturnTime = document.createElement('div');
+                movementReturnTime.textContent = "Was returned at: " + formatDateTime(return_time); 
+                boxContent.appendChild(movementReturnTime);
             } else if (take_key) {
                 movementType = "Take";
+                movementTypeElement.textContent = "Movement Type: " + movementType;
             }
-            const movementTypeElement = document.createElement("div");
-            movementTypeElement.textContent = "Movement Type: " + movementType;
+            
             boxContent.appendChild(movementTypeElement);
 
             // Add "notify" button if movement type is "take"
             if (movementType === "Take") {
-              
-              const notifyButton = document.createElement("button");
-              notifyButton.textContent = "Notify";
-              notifyButton.className = "notify-button";
-              notifyButton.onclick =  function() {
-                //sacar o email deste user
-                let user_ref = ref(db, "users/" + username)
-                get(user_ref).then((snapshot) => {
+                const notifyButton = document.createElement("button");
+                notifyButton.textContent = "Notify";
+                notifyButton.className = "notify-button";
+                notifyButton.onclick = function() {
+                    // Reference to the user in Firebase
+                    let userRef = ref(db, "users/" + username);
+                    get(userRef).then((snapshot) => {
+                        if (snapshot.exists()) {
+                            let userData = snapshot.val();
+                            let userEmail = userData['e-mail'];
 
-                if (snapshot.exists()) {
-                  let Userdata = snapshot.val();
-                  let userEmail =  Userdata['e-mail']; 
-                  
-                
-                // Send email using EmailJS
-                emailjs.send('service_civza6t', 'template_pfno3fu', {
-                    to_name: username,
-                    from_name: 'Sekeyrity',
-                    message: 'This is a test email sent using EmailJS!',
-                    to_email:userEmail
-                })
-                .then(function(response) {
-                    console.log('Email sent successfully:' + userEmail, response);
-                }, function(error) {
-                    console.error('Error sending email:' + userEmail, error);
-                });
-
-
-
-
-
-                  
-                   } else {
-                    console.log("No data available");
-                   }
-              });
-
-
-
-                
-                  
-              };
-              boxContent.appendChild(notifyButton);
-          }
+                            // Send email using EmailJS
+                            emailjs.send('service_civza6t', 'template_pfno3fu', {
+                                to_name: username,
+                                from_name: 'Sekeyrity',
+                                message: 'Hi '+ username + ' please return the '+ key_id +'.',
+                                to_email: userEmail
+                            }).then((response) => {
+                                console.log('Email sent successfully:' + userEmail, response);
+                            }).catch((error) => {
+                                console.error('Error sending email:' + userEmail, error);
+                            });
+                        } else {
+                            console.log("No data available");
+                        }
+                    });
+                };
+                boxContent.appendChild(notifyButton);
+            }
 
             // Add line break after each movement
             boxContent.appendChild(document.createElement("br"));
@@ -637,6 +662,7 @@ window.display_key_movements = function(){
     }).catch((error) => {
         console.error("Error getting movements: ", error);
     });
-
-   
 };
+
+
+  
