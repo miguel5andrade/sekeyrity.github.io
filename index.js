@@ -113,8 +113,11 @@ window.get_signup_info = function(){
       
   // Verifying if the username already exists in the database
   get(child(ref_root, 'users/' + nickname)).then((snapshot) => {
-    if (snapshot.exists) {
+    if (snapshot.exists && snapshot.val() != null) {
       // If the username already exists, prompt the user to choose another
+      //console.log("USER EXISTE" + nickname);
+      //const data = snapshot.val();
+      //console.log(data)
       messageElement.textContent = "Username already taken, choose another."; 
       return; // Exit the function if username exists
     } else {
