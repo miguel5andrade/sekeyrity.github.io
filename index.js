@@ -159,6 +159,7 @@ window.get_signup_info = function(){
             console.error("Error setting data under new nickname:", error);
           });
         } else {
+          messageElement.textContent = "[Error] Please scan your card again."; // Set the message content
           console.error("User data for 'default"+ codeString+ "' node does not exist.");
         }
       }).catch((error) => {
